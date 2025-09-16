@@ -254,23 +254,25 @@ def handle_private_messages(message):
         bot.send_message(message.chat.id, "I'm just a simple bot. Use /help to see what I can do!\n\n"
                          "Join our channel for updates:", reply_markup=markup)
 
-# Start the bot
 if __name__ == "__main__":
+    # Start Flask server for health checks
+    from threading import Thread
+    import os
+    
+    def run_flask():
+        app = Flask(__name__)
+        
+        @app.route('/')
+        def home():
+            return "Bot is running"
+        
+        port = int(os.environ.get("PORT", 10000))
+        app.run(host='0.0.0.0', port=port)
+    
+    # Start Flask in a separate thread
+    flask_thread = Thread(target=run_flask)
+    flask_thread.daemon = True
+    flask_thread.start()
+    
     print("Instagram Reset Bot is running...")
     bot.infinity_polling()
-    
-from flask import Flask
-from threading import Thread
-
-
-app = Flask('')
-
-@app.route('/')
-def home():
-    return "Bot is running"
-
-def run_flask():
-    app.run(host='0.0.0.0', port=8080)
-
-def keep_alive():
-    Thread(target=run_flask).start()
