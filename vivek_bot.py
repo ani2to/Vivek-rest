@@ -254,27 +254,23 @@ def handle_private_messages(message):
         bot.send_message(message.chat.id, "I'm just a simple bot. Use /help to see what I can do!\n\n"
                          "Join our channel for updates:", reply_markup=markup)
 
-# Add this at the end of your vivek_bot.py file, replacing the existing if __name__ block
+from threading import Thread
+from datetime import datetime
+from flask import Flask
+
+flask_app = Flask(__name__)
+
+@flask_app.route("/")
+def home():
+    return "✅ Bot is running!"
+
+def run_flask():
+    flask_app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
+
 if __name__ == "__main__":
-    # Start Flask server for health checks
-    from threading import Thread
-    import os
-    from flask import Flask
-    
-    def run_flask():
-        app = Flask(__name__)
-        
-        @app.route('/')
-        def home():
-            return "Bot is running"
-        
-        port = int(os.environ.get("PORT", 10000))
-        app.run(host='0.0.0.0', port=port)
-    
     # Start Flask in a separate thread
-    flask_thread = Thread(target=run_flask)
-    flask_thread.daemon = True
-    flask_thread.start()
+    Thread(target=run_flask).start()
     
-    print("Instagram Reset Bot is running...")
+    # Start the bot
+    logger.info("Starting bot...")
     bot.infinity_polling()
