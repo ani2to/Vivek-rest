@@ -1,3 +1,5 @@
+import os
+import time
 import requests
 import telebot
 from telebot import types
