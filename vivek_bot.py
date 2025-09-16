@@ -254,10 +254,12 @@ def handle_private_messages(message):
         bot.send_message(message.chat.id, "I'm just a simple bot. Use /help to see what I can do!\n\n"
                          "Join our channel for updates:", reply_markup=markup)
 
+# Add this at the end of your vivek_bot.py file, replacing the existing if __name__ block
 if __name__ == "__main__":
     # Start Flask server for health checks
     from threading import Thread
     import os
+    from flask import Flask
     
     def run_flask():
         app = Flask(__name__)
