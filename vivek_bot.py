@@ -12,10 +12,15 @@ import telebot
 from telebot.types import InlineKeyboardMarkup, InlineKeyboardButton
 from telebot import apihelper
 
-# Initialize bot with your token
-bot = telebot.TeleBot("8494293148:AAES5HFUfXV7iHeEa0OuAyKkHNjZvCGtuyY")
+logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
+logger = logging.getLogger(__name__)
 
-# Channel username (without @)
+# Get bot token from environment variable
+BOT_TOKEN = os.environ.get('BOT_TOKEN')
+if not BOT_TOKEN:
+    logger.error("BOT_TOKEN environment variable not set!")
+    exit(1)
+    
 CHANNEL_USERNAME = "Vivekredirect"
 # Group chat username (without @)
 GROUP_USERNAME = "VIVEK_CHAT"
@@ -242,7 +247,7 @@ def process_reset_request(message):
     success, result_msg = send_reset_request(username_or_email)
     
     if success:
-        bot.send_message(chat_id, f"✅ Reset link successfully sent to: {username_or_email}")
+        bot.send_message(chat_id, f"✅ Reset link successfully sent to: {username_or_email}\nDev: @Y00GUYS")
     else:
         # Format error response as JSON
         error_json = json.dumps(result_msg, indent=2)
